@@ -1,17 +1,19 @@
 # chatWithPDF
-This project allows you to upload a PDF document and ask questions about its content. It uses langchain, openapi ai model and  Facebook Ai Similarity Search(FAISS) library to process the text in the PDF and provide answers to questions pertaining the document.
+This project allows you to upload a PDF document and ask questions about its content. It uses langchain, openapi ai model, and Facebook Ai Similarity Search(FAISS) library to process the text in the PDF and provide answers to questions pertaining to the document.
 
-## Project Screen
-![image](https://github.com/john-thuo1/chatWithPDF/assets/108690517/d4565154-de20-4fe2-9213-f8bb2c66138b)
+## Demo
+https://github.com/MatthewRamsey/ai-labs/assets/14944537/d3172a3d-7e59-446c-9e7a-13df8f915f4d
+
 ### Cost
 ![image](https://github.com/john-thuo1/chatWithPDF/assets/108690517/c4a72a25-1aeb-447c-b4f4-90b38225f9d3)
+
 
 ## Installation
 
 1. Clone the repository:
 
    ```shell
-   git clone https://github.com/john-thuo1/chatWithPDF
+   git clone https://github.com/MatthewRamsey/chatWithPDF
    cd into your directory/ open with vscode
    ```
 2. Create a Virtual Environment:
@@ -31,9 +33,3 @@ This project allows you to upload a PDF document and ask questions about its con
    ```shell
    streamlit run App.py
    ```
-
-## Next Steps
-1. Add support for multiple file formats
-2. Implement Document Indexing techniques by use of libraries such as  Elasticsearch or Apache Solr 
-3. Enhance question answering capabilities: Explore advanced question answering techniques, such as using transformer models like BERT or    GPT, to improve the accuracy and comprehension of the system.
-4. Use a model that supports multiple languages, most notably some BERT models do support this.
