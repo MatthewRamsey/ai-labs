@@ -29,7 +29,7 @@ def process_text(text):
     return knowledgeBase
 
 def main():
-    st.title("Chat with your PDF 💬")
+    st.title("chatPDF")
     
     pdf = st.file_uploader('Upload your PDF Document', type='pdf')
     
