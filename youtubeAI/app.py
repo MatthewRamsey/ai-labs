@@ -4,6 +4,7 @@ from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain, SequentialChain
 from langchain.memory import ConversationBufferMemory
+from langchain.utilities import WikipediaAPIWrapper
 
 # Load environment variables
 load_dotenv()
@@ -20,22 +21,30 @@ title_template = PromptTemplate(
 
 # Prompt Templates
 script_template = PromptTemplate(
-    input_variables = ['title'], 
-    template='write me a Youtube script based on this TITLE: {title}')
+    input_variables = ['title', 'wikipedia_research'], 
+    template='write me a Youtube script based on this TITLE: {title} while leveraging this wikipedia research: {wikipedia_research}')
 
-memory = ConversationBufferMemory(input_key='topic', memory_key='chat_history')
+title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_history')
+script_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
 
 # LLMS
 llm = OpenAI(model='gpt-3.5-turbo-instruct', temperature=0.9)
-title_chain = LLMChain(llm=llm, prompt=title_template, output_key='title', memory=memory)
-script_chain = LLMChain(llm=llm, prompt=script_template, output_key='script', memory=memory)
-sequential_chain = SequentialChain(chains=[title_chain, script_chain], input_variables=['topic'], output_variables=['title', 'script'])
+title_chain = LLMChain(llm=llm, prompt=title_template, output_key='title', memory=title_memory)
+script_chain = LLMChain(llm=llm, prompt=script_template, output_key='script', memory=script_memory)
+
+wiki = WikipediaAPIWrapper()
 
 # Show to the screen
 if prompt:
-    response = sequential_chain({'topic':prompt})
-    streamlit.write(response['title'])
-    streamlit.write(response['script'])
+    title = title_chain.run(prompt)
+    wiki_research = wiki.run(prompt)
+    script = script_chain.run(title=title, wikipedia_research=wiki_research)
+    streamlit.write(title)
+    streamlit.write(script)
     
-    with streamlit.expander('Message History'):
-        streamlit.info(memory.buffer)
+    with streamlit.expander('Title History'):
+        streamlit.info(title_memory.buffer)
+    with streamlit.expander('Script History'):
+        streamlit.info(script_memory.buffer)
+    with streamlit.expander('Wikipedia Research'):
+        streamlit.info(wiki_research)
